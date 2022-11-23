@@ -53,7 +53,8 @@ class Product(models.Model):
 
 class Sider(models.Model):
     name = models.CharField(max_length=300)
-    url = models.URLField(max_length=500)
+    title = models.CharField(max_length=300, default='')
+    descript = models.TextField(default='')
     image = models.ImageField(upload_to='media')
 
     def __str__(self):
@@ -70,8 +71,9 @@ class Ads(models.Model):
 
 
 class Reviews(models.Model):
-    customer_name = models.CharField(max_length=300)
+    name = models.CharField(max_length=300)
     image = models.ImageField(upload_to='media')
+    post = models.CharField(max_length=300, default='')
     feedback = models.TextField()
 
     def __str__(self):
