@@ -30,7 +30,7 @@ class Brand(models.Model):
 
 
 STOCK = (('in stock', 'In Stock'), ('out of stock', 'Out of Stock'))
-LABELS = (('hot', 'HOT'), ('new', 'NEW'), ('sale', 'SALE'))
+LABELS = (('HOT', 'HOT'), ('NEW', 'NEW'), ('SALE', 'SALE'))
 
 
 class Product(models.Model):
@@ -48,7 +48,7 @@ class Product(models.Model):
     specification = models.TextField(blank=True)
 
     def __str__(self):
-        return self.name()
+        return self.name
 
 
 class Sider(models.Model):

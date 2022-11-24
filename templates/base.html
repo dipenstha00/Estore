@@ -203,13 +203,9 @@
             <!-- Left nav -->
             <ul class="nav navbar-nav">
               <li><a href="index.html">Home</a></li>
-              <li><a href="#">Men</span></a></li>
-              <li><a href="#">Women</a></li>
-              <li><a href="#">Kids </a></li>
-              <li><a href="#">Sports</a></li>
-              <li><a href="#">Digital </a></li>
-              <li><a href="#">Furniture</a></li>
-              <li><a href="blog-archive.html">Blog</a></li>
+              {% for cat in categories %}
+              <li><a href="category/{{cat.slug}}">{{cat.name}}</span></a></li>
+              {% endfor %}
               <li><a href="contact.html">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
