@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 
@@ -79,3 +80,13 @@ class Reviews(models.Model):
     def __str__(self):
         return self.name
 
+
+class ProductReviews(models.Model):
+    name = models.CharField(max_length=300)
+    slug = models.CharField(max_length=500)
+    email = models.EmailField(max_length=100)
+    review = models.TextField()
+    star = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.name

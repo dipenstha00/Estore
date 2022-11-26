@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import View
 from .models import *
 
@@ -33,3 +33,29 @@ class Categories(BaseView):
         ids = Category.objects.get(slug=slug).id
         self.context['category_product'] = Product.objects.filter(category_id=ids)
         return render(request, 'category.html', self.context)
+
+
+class ProductView(BaseView):
+    def get(self, request, slug):
+        self.context
+        self.context['product_details'] = Product.objects.filter(slug=slug)
+        self.context['product_reviews'] = ProductReviews.objects.filter(slug=slug)
+        return render(request, 'product-detail.html', self.context)
+
+
+def reviews(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        review = request.POST['review']
+        star = request.POST['star']
+        slug = request.POST['slug']
+        data = Reviews.objects.create(
+            name=name,
+            email=email,
+            review=review,
+            star=star,
+            slug=slug,
+        )
+        data.save()
+        return redirect(f'/product-detail/{{slug}}')
