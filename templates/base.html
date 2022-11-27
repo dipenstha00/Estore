@@ -98,15 +98,27 @@
                 <!-- / cellphone -->
               </div>
               <!-- / header top left -->
+              {% if user.is_authenticated %}
               <div class="aa-header-top-right">
                 <ul class="aa-head-top-nav-right">
-                  <li><a href="account.html">My Account</a></li>
+                  <li><a href="">{{user.username}}</a></li>
                   <li class="hidden-xs"><a href="wishlist.html">Wishlist</a></li>
                   <li class="hidden-xs"><a href="cart.html">My Cart</a></li>
                   <li class="hidden-xs"><a href="checkout.html">Checkout</a></li>
-                  <li><a href="" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                  <li><a href="/logout" >Logout</a></li>
                 </ul>
               </div>
+              {% else %}
+              <div class="aa-header-top-right">
+                <ul class="aa-head-top-nav-right">
+                  <li><a href="/signup">Register</a></li>
+                  <li class="hidden-xs"><a href="wishlist.html">Wishlist</a></li>
+                  <li class="hidden-xs"><a href="cart.html">My Cart</a></li>
+                  <li class="hidden-xs"><a href="checkout.html">Checkout</a></li>
+                  <li><a href="/login" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                </ul>
+              </div>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -202,7 +214,7 @@
           <div class="navbar-collapse collapse">
             <!-- Left nav -->
             <ul class="nav navbar-nav">
-              <li><a href="index.html">Home</a></li>
+              <li><a href="/">Home</a></li>
               {% for cat in categories %}
               <li><a href="category/{{cat.slug}}">{{cat.name}}</span></a></li>
               {% endfor %}
@@ -312,29 +324,6 @@
   </footer>
   <!-- / footer -->
 
-  <!-- Login Modal -->
-  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4>Login or Register</h4>
-          <form class="aa-login-form" action="">
-            <label for="">Username or Email address<span>*</span></label>
-            <input type="text" placeholder="Username or email">
-            <label for="">Password<span>*</span></label>
-            <input type="password" placeholder="Password">
-            <button class="aa-browse-btn" type="submit">Login</button>
-            <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
-            <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
-            <div class="aa-register-now">
-              Don't have an account?<a href="account.html">Register now!</a>
-            </div>
-          </form>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div>
 
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

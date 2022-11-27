@@ -27,22 +27,18 @@
         <div class="aa-myaccount-area">         
             <div class="row">
               <div class="col-md-6">
-                <div class="aa-myaccount-register">                 
-                 <h4>Register</h4>
-                 <form method="POST" action="/signup/" class="aa-login-form">
+                <div class="aa-myaccount-login">
+                 <h4>Login</h4>
+                 <form method="POST" action="/login/" class="aa-login-form">
                      {% csrf_token %}
                      {% for message in messages %}
                          <font color = "red"><center>{{message}}</center></font>
                      {% endfor %}
                     <label for="">Username<span>*</span></label>
                     <input type="text" name="username" placeholder="Username">
-                     <label for="">Email<span>*</span></label>
-                    <input type="text" name="email" placeholder="Email">
                     <label for="">Password<span>*</span></label>
                     <input type="password" name ="password" placeholder="Password">
-                     <label for="">Confirm Password<span>*</span></label>
-                    <input type="password" name="cpassword" placeholder="Confirm Password">
-                    <button type="submit" >Register</button>
+                    <button type="submit" >Login</button>
                   </form>
                 </div>
               </div>

@@ -7,4 +7,7 @@ urlpatterns = [
     path('category/<slug>', Categories.as_view(), name='category'),
     path('product-detail/<slug>', ProductView.as_view(), name='product-detail'),
     path('reviews', reviews, name='reviews'),
+    path('signup/', signup, name='signup'),
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
 ]
