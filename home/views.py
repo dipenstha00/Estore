@@ -111,3 +111,52 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('/')
+
+
+class CartView(BaseView):
+    def get(self, request):
+        self.context
+        username = request.user.username
+        self.context['cart_views'] = Cart.objects.filter(username=username, checkout=False)
+        c = 0
+        total_price = 0
+        for x in Cart.objects.filter(username=username, checkout=False):
+            x = Cart.objects.filter(username=username, checkout=False)[c].total
+            total_price = total_price + x
+            c = c+1
+
+        self.context['total_price'] = total_price
+        return render(request, 'cart.html', self.context)
+
+
+def add_to_cart(request,slug):
+    username = request.user.username
+    if Cart.objects.filter(slug=slug, username=username, checkout=False).exists():
+        quantity = Cart.objects.get(slug=slug, username=username, checkout=False).quantity
+        price = Product.objects.get(slug=slug).price
+        discounted_price =Product.objects.get(slug=slug).discoutned_price
+        if discounted_price > 0:
+            original_price = discounted_price
+        else:
+            original_price = price
+        quantity = quantity + 1
+        total = quantity * price
+        Cart.objects.filter(slug=slug, username=username,).update(quantity=quantity, total=total)
+        return redirect('/cart')
+    else:
+        price = Product.objects.get(slug=slug).price
+        discounted_price = Product.objecsts.get(slug=slug).discounted_price
+        if discounted_price > 0:
+            original_price = discounted_price
+        else:
+            original_price = price
+        data = Cart.objects.create(
+            slug=slug,
+            username=username,
+            total=original_price,
+            items=Product.objects.filter(slug=slug)[0],
+        )
+        data.save()
+        return redirect('/cart')
+
+
