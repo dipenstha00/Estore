@@ -119,20 +119,7 @@
     </div>
   </section>
   <!-- / Promo section -->
-  <!-- banner section -->
-  <section id="aa-banner">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">        
-          <div class="row">
-            <div class="aa-banner-area">
-            <a href="#"><img src="img/fashion-banner.jpg" alt="fashion banner img"></a>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+
   <!-- popular section -->
   <section id="aa-popular-category">
     <div class="container">
@@ -156,7 +143,7 @@
                     <li>
                       <figure>
                         <a class="aa-product-img" href="/product-detail/{{item.slug}}"><img src="{{item.image.url}}"></a>
-                        <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                        <a class="aa-add-card-btn" href="/add_to_cart/{{item.slug}}"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                          <figcaption>
                           <h4 class="aa-product-title"><a href="/product-detail/{{item.slug}}">{{item.name}}</a></h4>
                           <span class="aa-product-price">${% if item.discounted_price > 0 %}

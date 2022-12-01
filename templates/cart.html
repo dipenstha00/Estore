@@ -24,13 +24,14 @@
                     <tbody>
                     {% for cart in cart_views %}
                       <tr>
-                        <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
-                        <td><a href="#"><img src="cart.image.url" alt="img"></a></td>
+                        <td><a class="remove" href="/delete_cart/{{cart.slug}}"><fa class="fa fa-close"></fa></a></td>
+                        <td><a href="#"><img src="{{cart.items.image.url}}" alt="img"></a></td>
                         <td><a class="aa-cart-title" href="product-detail/{{cart.slug}}">{{cart.items.name}}</a></td>
                         <td>${% if cart.items.discounted_price > 0 %}
                         {{cart.discounted_price}}
                         {% else %}
                           {{cart.items.price}}
+                          {% endif %}
                         </td>
                         <td><input class="aa-cart-quantity" type="number" value="{{cart.quantity}}"></td>
                         <td>{{cart.total}}</td>
