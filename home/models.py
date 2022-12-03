@@ -103,3 +103,12 @@ class Cart(models.Model):
     def __str__(self):
         return self.items.name
 
+
+class Wishlist(models.Model):
+    username = models.CharField(max_length=300)
+    slug = models.CharField(max_length=500)
+    trueprice = models.IntegerField(default=0)
+    items = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.items.name

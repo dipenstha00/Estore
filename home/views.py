@@ -123,13 +123,13 @@ class CartView(BaseView):
         for x in Cart.objects.filter(username=username, checkout=False):
             x = Cart.objects.filter(username=username, checkout=False)[c].total
             total_price = total_price + x
-            c = c+1
+            c = c + 1
 
         self.context['total_price'] = total_price
         return render(request, 'cart.html', self.context)
 
 
-def add_to_cart(request,slug):
+def add_to_cart(request, slug):
     username = request.user.username
     if Cart.objects.filter(slug=slug, username=username, checkout=False).exists():
         quantity = Cart.objects.get(slug=slug, username=username, checkout=False).quantity
@@ -141,7 +141,7 @@ def add_to_cart(request,slug):
             original_price = price
         quantity = quantity + 1
         total = quantity * price
-        Cart.objects.filter(slug=slug, username=username,).update(quantity=quantity, total=total)
+        Cart.objects.filter(slug=slug, username=username, ).update(quantity=quantity, total=total)
         return redirect('/cart')
     else:
         price = Product.objects.get(slug=slug).price
@@ -181,3 +181,38 @@ def remove_item_cart(request, slug):
         total = quantity * original_price
         Cart.objects.filter(slug=slug, username=username).update(quantity=quantity, total=total)
         return redirect('/cart')
+
+
+class WishlistView(BaseView):
+    def get(self, request):
+        self.context
+        username = request.user.username
+        self.context['wishlist_views'] = Wishlist.objects.filter(username=username)
+        return render(request, 'wishlist.html', self.context)
+
+
+def add_to_wishlist(request, slug):
+    username = request.user.username
+    if Wishlist.objects.filter(username=username, slug=slug).exists():
+        return redirect('/wishlist')
+    else:
+        price = Product.objects.get(slug=slug).price
+        discounted_price = Product.objects.get(slug=slug).discounted_price
+        if discounted_price > 0:
+            true_price = discounted_price
+        else:
+            true_price = price
+        data = Wishlist.objects.create(
+            username=username,
+            slug=slug,
+            trueprice=true_price,
+            items=Product.objects.filter(slug=slug)[0],
+        )
+        data.save()
+        return redirect('/wishlist')
+
+
+def delete_wishlist(request, slug):
+    username = request.user.username
+    Wishlist.objects.filter(username=username, slug=slug).delete()
+    return redirect('/wishlist')
