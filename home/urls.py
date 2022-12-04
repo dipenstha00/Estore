@@ -16,4 +16,6 @@ urlpatterns = [
     path('wishlist/', WishlistView.as_view(), name='wishlist'),
     path('add_to_wishlist/<slug>', add_to_wishlist, name='add_to_wishlist'),
     path('delete_wishlist/<slug>', delete_wishlist, name='delete_wishlist'),
+    path('contact/', contact, name='contact'),
+
 ]

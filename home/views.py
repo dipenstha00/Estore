@@ -216,3 +216,22 @@ def delete_wishlist(request, slug):
     username = request.user.username
     Wishlist.objects.filter(username=username, slug=slug).delete()
     return redirect('/wishlist')
+
+
+def contact(request):
+    msg = {'info': About.objects.all()}
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        company = request.POST['company']
+        message = request.POST['message']
+        data = Contact.objects.create(
+            name=name,
+            email=email,
+            subject=subject,
+            company=company,
+            message=message
+        )
+        data.save()
+    return render(request, 'contact.html', msg)
