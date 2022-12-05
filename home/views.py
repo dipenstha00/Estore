@@ -235,3 +235,36 @@ def contact(request):
         )
         data.save()
     return render(request, 'contact.html', msg)
+
+
+class CheckoutView(BaseView):
+    def get(self, request):
+        self.context
+        username = request.user.username
+        self.context['bill_add'] = BillingAddress.objects.filter(username=username)
+        self.context['ship_add'] = ShippingAddress.objects.filter(username=username)
+        return render(request, 'checkout.html', self.context)
+
+
+def add_bill_add(request):
+    if request.method == 'POST':
+        fname = request.POST['fname']
+        lname = request.POST['lname']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        province = request.POST['province']
+        district = request.POST['district']
+        zipcode = request.POST['zipcode']
+        city = request.POST['city']
+        data = BillingAddress.objects.create(
+            fname=fname,
+            lname=lname,
+            email=email,
+            phone=phone,
+            province=province,
+            district=district,
+            zipcode=zipcode,
+            city=city,
+        )
+        data.save()
+        return redirect('checkout')

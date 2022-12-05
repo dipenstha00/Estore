@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Daily Shop | Home</title>
+    <title>EStore | Home</title>
 
     <!-- Font awesome -->
     <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
@@ -102,9 +102,9 @@
               <div class="aa-header-top-right">
                 <ul class="aa-head-top-nav-right">
                   <li><a href="">{{user.username}}</a></li>
-                  <li class="hidden-xs"><a href="wishlist.html">Wishlist</a></li>
-                  <li class="hidden-xs"><a href="cart.html">My Cart</a></li>
-                  <li class="hidden-xs"><a href="checkout.html">Checkout</a></li>
+                  <li class="hidden-xs"><a href="/wishlist/">Wishlist</a></li>
+                  <li class="hidden-xs"><a href="/cart/">My Cart</a></li>
+                  <li class="hidden-xs"><a href="/checkout/">Checkout</a></li>
                   <li><a href="/logout" >Logout</a></li>
                 </ul>
               </div>
@@ -137,7 +137,7 @@
                 <!-- Text based logo -->
                 <a href="index.html">
                   <span class="fa fa-shopping-cart"></span>
-                  <p>daily<strong>Shop</strong> <span>Your Shopping Partner</span></p>
+                  <p>E<strong>Store</strong> <span>Your Shopping Partner</span></p>
                 </a>
                 <!-- img based logo -->
                 <!-- <a href="index.html"><img src="img/logo.jpg" alt="logo img"></a> -->
@@ -283,11 +283,13 @@
                 <div class="aa-footer-widget">
                   <div class="aa-footer-widget">
                     <h3>Contact Us</h3>
+                    {% for infos in info %}
                     <address>
-                      <p> {{address}}</p>
-                      <p><span class="fa fa-phone"></span>{{phone}}</p>
-                      <p><span class="fa fa-envelope"></span>{{email}}</p>
+                      <p> {{infos.address}}</p>
+                      <p><span class="fa fa-phone"></span>{infos.phone}}</p>
+                      <p><span class="fa fa-envelope"></span>{{infos.email}}</p>
                     </address>
+                    {% endfor %}
                     <div class="aa-footer-social">
                       <a href="#"><span class="fa fa-facebook"></span></a>
                       <a href="#"><span class="fa fa-twitter"></span></a>

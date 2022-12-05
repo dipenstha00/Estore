@@ -129,3 +129,39 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
+
+
+STATES = (
+    ('province no.1 ', 'Province No. 1'),
+    ('madesh province', 'Madhesh Province'),
+    ('bagmati province', 'Bagmati Province'),
+    ('gandaki province', 'Gandaki Province'),
+    ('lumbini province', 'Lumbini Province'),
+    ('karnali province', 'Karnali Province'),
+    ('mahakali province', 'Mahakali Province')
+)
+
+
+class BillingAddress(models.Model):
+    username = models.CharField(max_length=300,default='')
+    fname = models.CharField(max_length=300)
+    lname = models.CharField(max_length=300)
+    email = models.EmailField(max_length=200)
+    phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=300)
+    province = models.CharField(max_length=100, choices=STATES)
+    district = models.CharField(max_length=200)
+    zipcode = models.IntegerField()
+    city = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.fname
+
+
+class ShippingAddress(models.Model):
+    username = models.CharField(max_length=300, default='')
+    s_address = models.ForeignKey(BillingAddress, on_delete=models.CASCADE)
+    specialnotes = models.TextField()
+
+    def __str__(self):
+        return self.fname
