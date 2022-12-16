@@ -18,6 +18,6 @@ urlpatterns = [
     path('delete_wishlist/<slug>', delete_wishlist, name='delete_wishlist'),
     path('contact/', contact, name='contact'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
-    path('add_bill_add/', add_bill_add, name='add_bill_add'),
+    path('placeorder/', placeorder, name='placeorder'),
 
 ]

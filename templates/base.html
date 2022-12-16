@@ -113,8 +113,8 @@
                 <ul class="aa-head-top-nav-right">
                   <li><a href="/signup">Register</a></li>
                   <li class="hidden-xs"><a href="wishlist.html">Wishlist</a></li>
-                  <li class="hidden-xs"><a href="cart.html">My Cart</a></li>
-                  <li class="hidden-xs"><a href="checkout.html">Checkout</a></li>
+                  <li class="hidden-xs"><a href="cart/">My Cart</a></li>
+                  <li class="hidden-xs"><a href="/checkout/">Checkout</a></li>
                   <li><a href="/login" data-toggle="modal" data-target="#login-modal">Login</a></li>
                 </ul>
               </div>
@@ -148,26 +148,24 @@
                 <a class="aa-cart-link" href="#">
                   <span class="fa fa-shopping-basket"></span>
                   <span class="aa-cart-title">SHOPPING CART</span>
-                  <span class="aa-cart-notify">2</span>
+                  <span class="aa-cart-notify">{{request.user.get_cart_count}}</span>
                 </a>
                 <div class="aa-cartbox-summary">
                   <ul>
+                    {% for item in carts %}
                     <li>
-                      <a class="aa-cartbox-img" href="#"><img src="img/woman-small-2.jpg" alt="img"></a>
+                      <a class="aa-cartbox-img" href="#"><img src="{{item.items.image.url}}" alt="img"></a>
                       <div class="aa-cartbox-info">
-                        <h4><a href="#">Product Name</a></h4>
-                        <p>1 x $250</p>
+                        <h4><a href="#">{{item.items.name}}</a></h4>
+                        <p>{{item.quantity}} x ${% if item.items.discounted_price > 0 %}
+                        {{item.discounted_price}}
+                        {% else %}
+                        {{item.items.price}}</p>
+                        {% endif %}
                       </div>
                       <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
                     </li>
-                    <li>
-                      <a class="aa-cartbox-img" href="#"><img src="img/woman-small-1.jpg" alt="img"></a>
-                      <div class="aa-cartbox-info">
-                        <h4><a href="#">Product Name</a></h4>
-                        <p>1 x $250</p>
-                      </div>
-                      <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
-                    </li>
+                    {% endfor %}
                     <li>
                       <span class="aa-cartbox-total-title">
                         Total
@@ -177,7 +175,7 @@
                       </span>
                     </li>
                   </ul>
-                  <a class="aa-cartbox-checkout aa-primary-btn" href="checkout.html">Checkout</a>
+                  <a class="aa-cartbox-checkout aa-primary-btn" href="checkout/">Checkout</a>
                 </div>
               </div>
               <!-- / cart box -->
@@ -283,10 +281,10 @@
                 <div class="aa-footer-widget">
                   <div class="aa-footer-widget">
                     <h3>Contact Us</h3>
-                    {% for infos in info %}
+                    {% for infos in about %}
                     <address>
                       <p> {{infos.address}}</p>
-                      <p><span class="fa fa-phone"></span>{infos.phone}}</p>
+                      <p><span class="fa fa-phone"></span>{{infos.phone}}</p>
                       <p><span class="fa fa-envelope"></span>{{infos.email}}</p>
                     </address>
                     {% endfor %}

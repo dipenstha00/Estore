@@ -1,3 +1,5 @@
+import random
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View
@@ -18,6 +20,7 @@ class BaseView(View):
 class HomeView(BaseView):
     def get(self, request):
         self.context
+        username = request.user.username
         self.context['categories'] = Category.objects.all()
         self.context['subcategories'] = SubCategory.objects.all()
         self.context['brand'] = Brand.objects.all()
@@ -27,6 +30,8 @@ class HomeView(BaseView):
         self.context['new'] = Product.objects.filter(labels='NEW')
         self.context['sales'] = Product.objects.filter(labels='SALE')
         self.context['reviews'] = Reviews.objects.all()
+        self.context['about'] = About.objects.all()
+        self.context['carts'] = Cart.objects.filter(username=username, checkout=False)
 
         return render(request, 'index.html', self.context)
 
@@ -166,6 +171,11 @@ def delete_cart(request, slug):
     return redirect('/cart')
 
 
+def get_cart_count(request):
+    username = request.user.username
+    return Cart.objects.filter(username=username, checkout=False).count()
+
+
 def remove_item_cart(request, slug):
     username = request.user.username
     if Cart.objects.filter(slug=slug, username=username, checkout=False).exists():
@@ -219,7 +229,7 @@ def delete_wishlist(request, slug):
 
 
 def contact(request):
-    msg = {'info': About.objects.all()}
+    msg = About.objects.all()
     if request.method == 'POST':
         name = request.POST['name']
         email = request.POST['email']
@@ -234,37 +244,66 @@ def contact(request):
             message=message
         )
         data.save()
-    return render(request, 'contact.html', msg)
+    return render(request, 'contact.html', {'info': msg})
 
 
 class CheckoutView(BaseView):
     def get(self, request):
         self.context
         username = request.user.username
-        self.context['bill_add'] = BillingAddress.objects.filter(username=username)
-        self.context['ship_add'] = ShippingAddress.objects.filter(username=username)
+        self.context['carts'] = Cart.objects.filter(username=username, checkout=False)
         return render(request, 'checkout.html', self.context)
 
 
-def add_bill_add(request):
+def placeorder(request):
     if request.method == 'POST':
-        fname = request.POST['fname']
-        lname = request.POST['lname']
-        email = request.POST['email']
-        phone = request.POST['phone']
-        province = request.POST['province']
-        district = request.POST['district']
-        zipcode = request.POST['zipcode']
-        city = request.POST['city']
-        data = BillingAddress.objects.create(
-            fname=fname,
-            lname=lname,
-            email=email,
-            phone=phone,
-            province=province,
-            district=district,
-            zipcode=zipcode,
-            city=city,
-        )
-        data.save()
-        return redirect('checkout')
+        neworder = Order()
+        neworder.username = request.user.username
+        neworder.fname = request.POST.get('fname')
+        neworder.lname = request.POST.get('lname')
+        neworder.email = request.POST.get('email')
+        neworder.phone = request.POST.get('phone')
+        neworder.province = request.POST.get('province')
+        neworder.district = request.POST.get('district')
+        neworder.zipcode = request.POST.get('zipcode')
+        neworder.city = request.POST.get('city')
+
+        neworder.payment = request.POST.get('payment_mode')
+
+        cart = Cart.objects.filter(username=request.user.username)
+        cart_total_price = 0
+
+        for item in cart:
+            if item.items.discounted_price > 0:
+                true_price = item.items.discounted_price
+            else:
+                true_price = item.items.price
+            cart_total_price = cart_total_price + true_price * item.quantity
+        neworder.total = cart_total_price
+        trackno = 'estore'+str(random.randint(111111,9999999))
+        while Order.objects.filter(tracking_no=trackno) is None:
+            trackno = 'estore' + str(random.randint(111111, 9999999))
+        neworder.tracking_no=trackno
+        neworder.save()
+
+        neworderitems = Cart.objects.filter(username=request.user.username)
+        for item in neworderitems:
+            OrderItem.objects.create(
+                order=neworder,
+                product=item.items,
+                price=true_price,
+                quantity=item.quantity,
+
+            )
+            #To decrease the product quantity from available stock
+            orderproduct = Cart.objects.filter(id=item.id).first()
+            orderproduct.quantity = orderproduct.quantity - item.quantity
+            orderproduct.save()
+
+        # To clear user's Cart
+        Cart.objects.filter(username=request.user.username).delete()
+
+        messages.success(request, "Your order has been placed successfully")
+    return redirect('/')
+
+

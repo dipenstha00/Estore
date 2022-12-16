@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -140,9 +141,19 @@ STATES = (
     ('karnali province', 'Karnali Province'),
     ('mahakali province', 'Mahakali Province')
 )
+PAYMENT_METHOD = (
+    ('cash on delivery', 'Cash on Delivery'),
+    ('paypal', 'Via PayPal'),
+)
+
+STATUS = (
+    ('Pending', 'Pending'),
+    ('Shipping', 'Shipping'),
+    ('Delivered', 'Delivered')
+)
 
 
-class BillingAddress(models.Model):
+class Order(models.Model):
     username = models.CharField(max_length=300,default='')
     fname = models.CharField(max_length=300)
     lname = models.CharField(max_length=300)
@@ -153,15 +164,24 @@ class BillingAddress(models.Model):
     district = models.CharField(max_length=200)
     zipcode = models.IntegerField()
     city = models.CharField(max_length=300)
+    total = models.IntegerField(null=False)
+    payment = models.CharField(max_length=100, choices=PAYMENT_METHOD)
+    payment_id = models.CharField(max_length=150, null=True)
+    status = models.CharField(max_length=150, choices=STATUS, default='Pending')
+    message = models.TextField()
+    tracking_no = models.CharField(max_length=150, null=True)
+    created_at = models.TimeField(auto_now_add=True)
+    updated_at = models.TimeField(auto_now=True)
 
     def __str__(self):
-        return self.fname
+        return '{} - {}'.format(self.id, self.tracking_no)
 
 
-class ShippingAddress(models.Model):
-    username = models.CharField(max_length=300, default='')
-    s_address = models.ForeignKey(BillingAddress, on_delete=models.CASCADE)
-    specialnotes = models.TextField()
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    price = models.FloatField(null=False)
+    quantity = models.IntegerField(null=False)
 
     def __str__(self):
-        return self.fname
+        return '{} - {}'.format(self.order.id, self.order.tracking_no)

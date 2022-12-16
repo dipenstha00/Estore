@@ -13,5 +13,6 @@ admin.site.register(Cart)
 admin.site.register(Wishlist)
 admin.site.register(About)
 admin.site.register(Contact)
-admin.site.register(BillingAddress)
-admin.site.register(ShippingAddress)
+admin.site.register(Order)
+admin.site.register(OrderItem)
+
