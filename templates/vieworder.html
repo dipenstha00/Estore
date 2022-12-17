@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section id="checkout">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+         <div class="checkout-area">
+            
+            {{orderitems.quantity}}
+            
+            <h2>Order View</h2>
+            <div class="col-md-4">
+                <h4>Shipping Details</h4>
+                <hr>
+                <label class="mt-2">First Name</label>
+                <div class="border p-1">{{order.fname}}</div>
+                <label class="mt-2">Last Name</label>
+                <div class="border p-1">{{order.lname}}</div>
+                <label class="mt-2">Email</label>
+                <div class="border p-1">{{order.email}}</div>
+                <label class="mt-2">Contact Number</label>
+                <div class="border p-1">{{order.phone}}</div>
+                <label class="mt-2">Address</label>
+                <div class="border p-1">
+                    {{order.province}}
+                    {{order.district}}
+                    {{order.city}}
+                </div>
+                <label class="mt-2">ZIP Code</label>
+                <div class="border p-1">{{order.zipcode}}</div>
+                <label class="mt-2">Total Amount</label>
+                <div class="border p-1">{{order.total}}</div>
+                <label class="mt-2">Payment</label>
+                <div class="border p-1">{{order.payment}}</div>
+                <label class="mt-2">Status</label>
+                <div class="border p-1">{{order.status}}</div>
+                <label class="mt-2">Order Tracking Number</label>
+                <div class="border p-1">{{order.tracking_no}}</div>
+                <label class="mt-2">Ordered Date</label>
+                <div class="border p-1">{{order.created_at}}</div>
+                   
+            </div>
+            <div class="col-lg-7 col-md-6 col-sm-8 col-md-push-1">
+            <table class='table table-bordered'>
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Quantity</td>
+                        <td>Price</td>
+                        <td>Total</td>
+                        <td></td>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>{{item.product.name}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.price}}</td>
+                        <td><img src="{{item.product.image.url}}" alt="img"></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+            
+        </div>
+
+
+
+         </div>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}

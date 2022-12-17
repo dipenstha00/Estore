@@ -326,3 +326,20 @@ def placeorder(request):
 
         messages.success(request, "Your order has been placed successfully")
     return redirect('/')
+
+
+class OrderView(BaseView):
+    def get(self,request):
+        self.context
+        username=request.user.username
+        self.context['order_list'] = Order.objects.filter(username=username)
+        
+        return render(request, 'order.html', self.context)
+
+
+def vieworder(request, t_no):
+    order = Order.objects.filter(tracking_no=t_no).filter(username=request.user.username).first()
+    orderitems = OrderItem.objects.filter(order=order)
+    context={'order':order, 'orderitems':orderitems}
+
+    return render(request, 'vieworder.html', context)

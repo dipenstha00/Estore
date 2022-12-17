@@ -19,5 +19,7 @@ urlpatterns = [
     path('contact/', contact, name='contact'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('placeorder/', placeorder, name='placeorder'),
+    path('order/', OrderView.as_view(), name='order'),
+    path('vieworder/<str:t_no>/', vieworder, name='vieworder'),
 
 ]
