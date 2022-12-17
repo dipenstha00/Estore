@@ -113,27 +113,19 @@
                       {% for item in carts %}
                         <tr>
                           <td>{{item.items.name}} <strong> x {{item.quantity}}</strong></td>
-                          <td>${% if item.items.discounted_price > 0 %}
-                              {{cart.discounted_price}}
+                          <td>Rs. {% if item.items.discounted_price > 0 %}
+                              {{item.items.discounted_price}}
                           {% else %}
-                          {{item.price}}
+                          {{item.items.price}}
                             {% endif %}
                           </td>
                         </tr>
                       {% endfor %}
                       </tbody>
-                      <tfoot>
-                        <tr>
-                          <th>Subtotal</th>
-                          <td>$750</td>
-                        </tr>
-                         <tr>
-                          <th>Tax</th>
-                          <td>$35</td>
-                        </tr>
+                      <tfoot>          
                          <tr>
                           <th>Total</th>
-                          <td>$785</td>
+                          <td>Rs. {{total_price}}</td>
                         </tr>
                       </tfoot>
                     </table>

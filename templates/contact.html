@@ -58,11 +58,11 @@
                  <div class="aa-contact-address-right">
                    <address>
                      <h4>EStore</h4>
-                       {% for infos in info %}
+                       {% for item in info %}
                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum modi dolor facilis! Nihil error, eius.</p>
-                     <p><span class="fa fa-home"></span>{{infos.address}}</p>
-                     <p><span class="fa fa-phone"></span>{{infos.phone}}</p>
-                     <p><span class="fa fa-envelope"></span>{{infos.email}}</p>
+                     <p><span class="fa fa-home"></span>{{item.address}}</p>
+                     <p><span class="fa fa-phone"></span>{{item.phone}}</p>
+                     <p><span class="fa fa-envelope"></span>{{item.email}}</p>
                        {% endfor %}
                    </address>
                  </div>

@@ -33,6 +33,13 @@
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
+    <!-- Alertify JS -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -135,7 +142,7 @@
               <!-- logo  -->
               <div class="aa-logo">
                 <!-- Text based logo -->
-                <a href="index.html">
+                <a href="/">
                   <span class="fa fa-shopping-cart"></span>
                   <p>E<strong>Store</strong> <span>Your Shopping Partner</span></p>
                 </a>
@@ -158,12 +165,12 @@
                       <div class="aa-cartbox-info">
                         <h4><a href="#">{{item.items.name}}</a></h4>
                         <p>{{item.quantity}} x ${% if item.items.discounted_price > 0 %}
-                        {{item.discounted_price}}
+                        {{item.items.discounted_price}}
                         {% else %}
                         {{item.items.price}}</p>
                         {% endif %}
                       </div>
-                      <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
+                      <a class="aa-remove-product" href="/delete_cart/{{item.slug}}"><span class="fa fa-times"></span></a>
                     </li>
                     {% endfor %}
                     <li>
@@ -171,7 +178,7 @@
                         Total
                       </span>
                       <span class="aa-cartbox-total-price">
-                        $500
+                        Rs. {{total_price}}
                       </span>
                     </li>
                   </ul>
@@ -214,7 +221,7 @@
             <ul class="nav navbar-nav">
               <li><a href="/">Home</a></li>
               {% for cat in categories %}
-              <li><a href="category/{{cat.slug}}">{{cat.name}}</span></a></li>
+              <li><a href="/category/{{cat.slug}}">{{cat.name}}</span></a></li>
               {% endfor %}
               <li><a href="/contact/">Contact</a></li>
             </ul>
@@ -224,7 +231,14 @@
     </div>
   </section>
   <!-- / menu -->
-
+  
+  <script>
+    {% for msg in messages %}
+    alertify.set('notifier','position', 'top-center');
+    alertify.success('{{msg}}');
+    {% endfor %}
+  </script>
+  
    {% block content %}
    {% endblock %}
 

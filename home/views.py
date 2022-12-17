@@ -106,6 +106,7 @@ def user_login(request):
                             password=password)
         if user is not None:
             login(request, user)
+            messages.success(request, "Welcome {{user.username}}")
             return redirect('/')
         else:
             messages.error(request, "Wrong credentials! Please enter correct credentials")
@@ -125,7 +126,7 @@ class CartView(BaseView):
         self.context['cart_views'] = Cart.objects.filter(username=username, checkout=False)
         c = 0
         total_price = 0
-        for x in Cart.objects.filter(username=username, checkout=False):
+        for i in Cart.objects.filter(username=username, checkout=False):
             x = Cart.objects.filter(username=username, checkout=False)[c].total
             total_price = total_price + x
             c = c + 1
@@ -147,7 +148,9 @@ def add_to_cart(request, slug):
         quantity = quantity + 1
         total = quantity * price
         Cart.objects.filter(slug=slug, username=username, ).update(quantity=quantity, total=total)
-        return redirect('/cart')
+        messages.success(request, 'Added to Cart')
+        return redirect('/')
+
     else:
         price = Product.objects.get(slug=slug).price
         discounted_price = Product.objects.get(slug=slug).discounted_price
@@ -162,13 +165,31 @@ def add_to_cart(request, slug):
             items=Product.objects.filter(slug=slug)[0],
         )
         data.save()
+        return redirect('/')
+
+
+def remove_cart(request, slug):
+    username = request.user.username
+    if Cart.objects.filter(slug=slug, username=username, checkout=False).exists():
+        quantity = Cart.objects.get(slug=slug, username=username, checkout=False).quantity
+        price = Product.objects.get(slug=slug).price
+        discounted_price = Product.objects.get(slug=slug).discounted_price
+        if discounted_price > 0:
+            original_price = discounted_price
+        else:
+            original_price = price
+        quantity = quantity - 1
+        total = quantity * price
+        Cart.objects.filter(slug=slug, username=username, ).update(quantity=quantity, total=total)
         return redirect('/cart')
 
 
 def delete_cart(request, slug):
     username = request.user.username
     Cart.objects.filter(slug=slug, username=username, checkout=False).delete()
+    messages.info(request, "Removed from cart!")
     return redirect('/cart')
+
 
 
 def get_cart_count(request):
@@ -280,10 +301,10 @@ def placeorder(request):
                 true_price = item.items.price
             cart_total_price = cart_total_price + true_price * item.quantity
         neworder.total = cart_total_price
-        trackno = 'estore'+str(random.randint(111111,9999999))
+        trackno = 'estore' + str(random.randint(111111, 9999999))
         while Order.objects.filter(tracking_no=trackno) is None:
             trackno = 'estore' + str(random.randint(111111, 9999999))
-        neworder.tracking_no=trackno
+        neworder.tracking_no = trackno
         neworder.save()
 
         neworderitems = Cart.objects.filter(username=request.user.username)
@@ -295,7 +316,7 @@ def placeorder(request):
                 quantity=item.quantity,
 
             )
-            #To decrease the product quantity from available stock
+            # To decrease the product quantity from available stock
             orderproduct = Cart.objects.filter(id=item.id).first()
             orderproduct.quantity = orderproduct.quantity - item.quantity
             orderproduct.save()
@@ -305,5 +326,3 @@ def placeorder(request):
 
         messages.success(request, "Your order has been placed successfully")
     return redirect('/')
-
-
