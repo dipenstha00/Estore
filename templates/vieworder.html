@@ -5,11 +5,10 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-         <div class="checkout-area">
-            
-            {{orderitems.quantity}}
-            
-            <h2>Order View</h2>
+         <div class="checkout-area">         
+            <h2>Order View
+                <a href='/order/' class='btn btn-warning'>Back</a>
+            </h2>
             <div class="col-md-4">
                 <h4>Shipping Details</h4>
                 <hr>
@@ -29,19 +28,11 @@
                 </div>
                 <label class="mt-2">ZIP Code</label>
                 <div class="border p-1">{{order.zipcode}}</div>
-                <label class="mt-2">Total Amount</label>
-                <div class="border p-1">{{order.total}}</div>
-                <label class="mt-2">Payment</label>
-                <div class="border p-1">{{order.payment}}</div>
-                <label class="mt-2">Status</label>
-                <div class="border p-1">{{order.status}}</div>
-                <label class="mt-2">Order Tracking Number</label>
-                <div class="border p-1">{{order.tracking_no}}</div>
-                <label class="mt-2">Ordered Date</label>
-                <div class="border p-1">{{order.created_at}}</div>
+                
                    
             </div>
             <div class="col-lg-7 col-md-6 col-sm-8 col-md-push-1">
+                <h4>Product Details</h4>
             <table class='table table-bordered'>
                 <thead>
                     <tr>
@@ -54,17 +45,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    {% for item in orderitems %}
                     <tr>
                         <td>{{item.product.name}}</td>
                         <td>{{item.quantity}}</td>
                         <td>{{item.price}}</td>
-                        <td><img src="{{item.product.image.url}}" alt="img"></td>
+                        <td><img src="{{item.product.image.url}}" hieght="50px" width="50px" alt="img"></td>
                     </tr>
-                    
+                    {% endfor %}
                 </tbody>
             </table>
-            
+            <h4>Grand Total : <span class="float-left">{{order.total}}</span></h4>
+            <h6 class="border p-2">Payment : <span class="float-end">{{order.payment}}</span></h4>
+            <h6 class="border p-2">Order Tracking Number : <span class="float-end">{{order.tracking_no}}</span></h4>
+            <h6 class="border p-2">Status : <span class="float-end">{{order.status}}</span></h4>
+
         </div>
 
 

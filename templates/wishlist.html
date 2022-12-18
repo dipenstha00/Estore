@@ -27,9 +27,9 @@
                         <td><a class="remove" href="/delete_wishlist/{{list.slug}}"><fa class="fa fa-close"></fa></a></td>
                         <td><a href="#"><img src="{{list.items.image.url}}" alt="img"></a></td>
                         <td><a class="aa-cart-title" href="#">{{list.items.name}}</a></td>
-                        <td>${{list.trueprice}}</td>
+                        <td>Rs. {{list.trueprice}}</td>
                         <td>{{list.items.stock}}</td>
-                        <td><a href="/add_to_cart/" class="aa-add-to-cart-btn">Add To Cart</a></td>
+                        <td><a href="/add_to_cart/{{list.slug}}" class="aa-add-to-cart-btn">Add To Cart</a></td>
                       </tr>
                     {% endfor %}
                       </tbody>

@@ -52,6 +52,16 @@ class ProductView(BaseView):
         return render(request, 'product-detail.html', self.context)
 
 
+class SearchView(BaseView):
+    def get(self, request):
+        self.context
+        query = request.GET.get('query')
+        if not query:
+            return redirect('/')
+        self.context['search_product'] = Product.objects.filter(name__contains = query)
+        return render(request, 'search.html', self.context)
+
+
 def reviews(request):
     if request.method == 'POST':
         name = request.POST['name']
@@ -91,6 +101,7 @@ def signup(request):
                     password=password,
                 )
                 user.save()
+                return redirect('/login')
         else:
             messages.error(request, "The password don't match!Please enter the same password.")
             return redirect('/signup')
